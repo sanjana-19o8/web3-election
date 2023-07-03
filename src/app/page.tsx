@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-12">
       <Header />
-      <div>
+      <div id="all-candidates" className="grid gap-12 lg:grid-cols-4">
         <Card />
       </div>
 

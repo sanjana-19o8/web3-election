@@ -1,4 +1,8 @@
 /** @type {import('tailwindcss').Config} */
+/**
+ * @import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
+ */
+
 module.exports = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -12,6 +16,9 @@ module.exports = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+      fontFamily: {
+        textCursive: ['Dancing Script', 'cursive']
+      }
     },
   },
   plugins: [],

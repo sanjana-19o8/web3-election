@@ -1,7 +1,7 @@
 // Deploy our smart contract onto Testnet using ethers.js library
 
 import { ethers } from 'ethers'
-import { abi, addr } from '../contracts/election'
+import { abi, addr } from '../src/contracts/election'
 
 declare global {
     interface Window {
@@ -21,7 +21,6 @@ export const writeContract = async () => {
             // Handle error
             console.error('Error:', error);
         });
-    provider.send('eth_requestAccount', []);
     const signer = provider.getSigner();
 
     const contract = new ethers.Contract(addr, abi, signer);

@@ -4,12 +4,12 @@ import { useEffect, useState } from "react"
 import Card from "./components/Card"
 import Header from "./components/Header"
 import { addr, abi } from '../contracts/election'
-import { Contract, ethers } from "ethers"
+import { BigNumber, Contract, ethers } from "ethers"
 
 interface Candidate {
   name: any,
-  id: any,
-  voteCount: any,
+  id: BigNumber,
+  voteCount: BigNumber,
 }
 
 export default function Home() {
@@ -92,12 +92,13 @@ export default function Home() {
         {!candidates && 'NO CANDIDATES REGISTERED YET!'}
         <ul>
           {candidates && candidates.map((candi) => {
+            console.log(candi.id._hex)
             return(
-              <div key={candi.id._hex}>
+              <div key={candi.id.toNumber()}>
                 <li>name: {candi.name}</li>
-                <li>id: {candi.id}</li>
-                <li>voteCount: {candi.voteCount}</li>
-                <button onClick={() => vote(candi.id)}>Vote</button>
+                <li>id: {candi.id.toNumber()}</li>
+                <li>voteCount: {candi.voteCount.toNumber()}</li>
+                <button onClick={() => vote(candi.id.toNumber())}>Vote</button>
               </div>
             )
           })}

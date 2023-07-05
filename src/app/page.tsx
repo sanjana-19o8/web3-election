@@ -32,7 +32,7 @@ export default function Home() {
         const _signer = provider.getSigner();
         setSigner(_signer);
         
-        const _contract = new ethers.Contract(addr, abi, signer);
+        const _contract = new ethers.Contract(addr, abi, _signer);
         setContract(_contract);
       } catch (error) {
         console.log('data not fetched');
@@ -60,11 +60,21 @@ export default function Home() {
   const callElection = async () => {
     try {
       const accounts = await signer.getAddress();
-      const result = await contract.election('joe').send({ from: accounts });
-      console.log(result, 'ab to connect hoja bhaiiii');
+      const result = await contract.election('linda').send({ from: accounts[0] });
+      console.log(result, 'foo');
       
     } catch (error) {
       console.log('election fn not called');
+    }
+  }
+
+  const vote = async (id:number) => {
+    try {
+      const accounts = await signer.getAddress();
+      const result = await contract.vote(id).send({ from: accounts[0] });
+      console.log(result, 'foo');
+    } catch (error) {
+      console.log(`Sorry, couldn't cast vote`)
     }
   }
 
@@ -83,13 +93,16 @@ export default function Home() {
         <ul>
           {candidates && candidates.map((candi) => {
             return(
-              <li key={candi.id}>
-                name: {candi.name}
-                voteCount: {candi.voteCount}
-              </li>
+              <div key={candi.id._hex}>
+                <li>name: {candi.name}</li>
+                <li>id: {candi.id}</li>
+                <li>voteCount: {candi.voteCount}</li>
+                <button onClick={() => vote(candi.id)}>Vote</button>
+              </div>
             )
           })}
         </ul>
+      
       </div>
 
       <footer className="mb-32 grid text-center lg:mb-0 lg:grid-cols-1 lg:text-left">&copy;&lt;sanjana-vajr /&gt;

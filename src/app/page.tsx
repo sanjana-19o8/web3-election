@@ -93,7 +93,6 @@ export default function Home() {
                  id={id.toNumber()}
                  voteCount={voteCount.toNumber()} 
                  voteFn={()=>vote(id.toNumber())} />
-                <button onClick={() => vote(id.toNumber())}>Vote</button>
               </div>
             )
           })}

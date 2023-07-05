@@ -41,9 +41,6 @@ export default function Home() {
     fetchData();
   }, [])
   
-  console.log('signer:', signer)
-  console.log(contract);
-
   const fetchCandidateData = async () => {
     try {
       if (contract) {

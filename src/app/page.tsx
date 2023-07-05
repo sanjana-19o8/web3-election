@@ -64,7 +64,7 @@ export default function Home() {
       console.log(result, 'foo');
       
     } catch (error) {
-      console.log('election fn not called');
+      console.log('confirm txn...');
     }
   }
 
@@ -82,23 +82,21 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-between p-12">
       <Header />
 
-      <button onClick={() => {
-        fetchCandidateData();
-        console.log('candidates', candidates)
-      }}>Get Candidates</button>
+      <button onClick={fetchCandidateData}>Get Candidates</button>
       <button onClick={callElection}>Call Election</button>
 
       <div id="all-candidates" className="grid gap-12 lg:grid-cols-4">
         {!candidates && 'NO CANDIDATES REGISTERED YET!'}
         <ul>
-          {candidates && candidates.map((candi) => {
-            console.log(candi.id._hex)
+          {candidates && candidates.map(({name, id, voteCount}: Candidate) => {
             return(
-              <div key={candi.id.toNumber()}>
-                <li>name: {candi.name}</li>
-                <li>id: {candi.id.toNumber()}</li>
-                <li>voteCount: {candi.voteCount.toNumber()}</li>
-                <button onClick={() => vote(candi.id.toNumber())}>Vote</button>
+              <div key={id.toNumber()}>
+                <Card 
+                 name={name} 
+                 id={id.toNumber()}
+                 voteCount={voteCount.toNumber()} 
+                 voteFn={()=>vote(id.toNumber())} />
+                <button onClick={() => vote(id.toNumber())}>Vote</button>
               </div>
             )
           })}

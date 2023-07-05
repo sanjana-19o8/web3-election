@@ -5,4 +5,4 @@ This app displays the contesting candidates for the Election Hour 🚀
 
 Happy Voting!
 
-⚒️: NextJS, Web3JS, TailwindCSS, Typescript
+⚒️: NextJS, EthersJS, TailwindCSS, Typescript

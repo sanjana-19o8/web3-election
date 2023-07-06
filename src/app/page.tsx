@@ -5,12 +5,21 @@ import Card from "./components/Card"
 import Header from "./components/Header"
 import { addr, abi } from '../contracts/election'
 import { BigNumber, Contract, ethers } from "ethers"
+import { Carousel } from "react-responsive-carousel"
+import 'react-responsive-carousel/lib/styles/carousel.min.css'
 
 interface Candidate {
   name: any,
   id: BigNumber,
   voteCount: BigNumber,
 }
+
+const breakpoints = [
+  { width: 1, itemsToShow: 1},
+  { width: 550, itemsToShow: 2},
+  { width: 760, itemsToShow: 3},
+  { width: 1200, itemsToShow: 4},
+]
 
 export default function Home() {
   const [signer, setSigner] = useState<any>();
@@ -82,9 +91,9 @@ export default function Home() {
       <button onClick={fetchCandidateData}>Get Candidates</button>
       <button onClick={callElection}>Call Election</button>
 
-      <div id="all-candidates" className="grid gap-12 lg:grid-cols-4">
+      <div id="all-candidates">
         {!candidates && 'NO CANDIDATES REGISTERED YET!'}
-        <ul>
+        <Carousel className="grid gap-12 lg:grid-cols-4" showThumbs={false} breakPoints={breakpoints}>
           {candidates && candidates.map(({name, id, voteCount}: Candidate) => {
             return(
               <div key={id.toNumber()}>
@@ -96,7 +105,7 @@ export default function Home() {
               </div>
             )
           })}
-        </ul>
+        </Carousel>
       
       </div>
 

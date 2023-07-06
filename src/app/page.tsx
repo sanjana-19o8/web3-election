@@ -15,10 +15,10 @@ interface Candidate {
 }
 
 const breakpoints = [
-  { width: 1, itemsToShow: 1},
-  { width: 550, itemsToShow: 2},
-  { width: 760, itemsToShow: 3},
-  { width: 1200, itemsToShow: 4},
+  { width: 1, itemsToShow: 1 },
+  { width: 550, itemsToShow: 2 },
+  { width: 760, itemsToShow: 3 },
+  { width: 1200, itemsToShow: 4 },
 ]
 
 export default function Home() {
@@ -40,7 +40,7 @@ export default function Home() {
           });
         const _signer = provider.getSigner();
         setSigner(_signer);
-        
+
         const _contract = new ethers.Contract(addr, abi, _signer);
         setContract(_contract);
       } catch (error) {
@@ -49,7 +49,7 @@ export default function Home() {
     };
     fetchData();
   }, [])
-  
+
   const fetchCandidateData = async () => {
     try {
       if (contract) {
@@ -68,13 +68,13 @@ export default function Home() {
       const accounts = await signer.getAddress();
       const result = await contract.election('linda').send({ from: accounts[0] });
       console.log(result, 'foo');
-      
+
     } catch (error) {
       console.log('confirm txn...');
     }
   }
 
-  const vote = async (id:number) => {
+  const vote = async (id: number) => {
     try {
       const accounts = await signer.getAddress();
       const result = await contract.vote(id).send({ from: accounts[0] });
@@ -85,32 +85,34 @@ export default function Home() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-12">
+    <>
       <Header />
+      <main className="flex min-h-screen flex-col items-center justify-between p-12">
 
-      <button onClick={fetchCandidateData}>Get Candidates</button>
-      <button onClick={callElection}>Call Election</button>
+        <button onClick={fetchCandidateData}>Get Candidates</button>
+        <button onClick={callElection}>Call Election</button>
 
-      <div id="all-candidates">
-        {!candidates && 'NO CANDIDATES REGISTERED YET!'}
-        <Carousel className="grid gap-12 lg:grid-cols-4" showThumbs={false} breakPoints={breakpoints}>
-          {candidates && candidates.map(({name, id, voteCount}: Candidate) => {
-            return(
-              <div key={id.toNumber()}>
-                <Card 
-                 name={name} 
-                 id={id.toNumber()}
-                 voteCount={voteCount.toNumber()} 
-                 voteFn={()=>vote(id.toNumber())} />
-              </div>
-            )
-          })}
-        </Carousel>
-      
-      </div>
+        <div id="all-candidates">
+          {!candidates && 'NO CANDIDATES REGISTERED YET!'}
+          <Carousel className="grid gap-12 lg:grid-cols-4" showThumbs={false} breakPoints={breakpoints}>
+            {candidates && candidates.map(({ name, id, voteCount }: Candidate) => {
+              return (
+                <div key={id.toNumber()}>
+                  <Card
+                    name={name}
+                    id={id.toNumber()}
+                    voteCount={voteCount.toNumber()}
+                    voteFn={() => vote(id.toNumber())} />
+                </div>
+              )
+            })}
+          </Carousel>
 
-      <footer className="mb-32 grid text-center lg:mb-0 lg:grid-cols-1 lg:text-left">&copy;&lt;sanjana-vajr /&gt;
-      </footer>
-    </main>
+        </div>
+
+        <footer className="mb-32 grid text-center lg:mb-0 lg:grid-cols-1 lg:text-left">&copy;&lt;sanjana-vajr /&gt;
+        </footer>
+      </main>
+    </>
   )
 }

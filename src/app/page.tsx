@@ -110,12 +110,12 @@ export default function Home() {
               )
             })}
           </Carousel>
-
         </div>
-
-        <footer className="mb-32 grid text-center lg:mb-0 lg:grid-cols-1 lg:text-left">&copy;&lt;sanjana-vajr /&gt;
-        </footer>
       </main>
+      
+      <footer className="mb-32 grid text-center lg:mb-0 lg:grid-cols-1 lg:text-left">
+        &copy;&lt;sanjana-vajr /&gt;
+      </footer>
     </>
   )
 }

@@ -86,12 +86,15 @@ export default function Home() {
 
   return (
     <>
-      <Header />
+      <nav className="bg-gray w-screen flex justify-between h-full">
+        <Header />
+        <aside className="flex right-0 gap-3">
+          <button className="btn" onClick={fetchCandidateData}>Get Candidates</button>
+          <button className="btn" onClick={callElection}>Call Election</button>
+        </aside>
+      </nav>
+
       <main className="flex min-h-screen flex-col items-center justify-between p-12">
-
-        <button onClick={fetchCandidateData}>Get Candidates</button>
-        <button onClick={callElection}>Call Election</button>
-
         <div id="all-candidates">
           {!candidates && 'NO CANDIDATES REGISTERED YET!'}
           <Carousel className="grid gap-12 lg:grid-cols-4" showThumbs={false} breakPoints={breakpoints}>

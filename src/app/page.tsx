@@ -1,12 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 import { useEffect, useState } from "react"
-import Card from "./components/Card"
-import Header from "./components/Header"
+import { Header, Card } from "./components/index"
 import { addr, abi } from '../contracts/election'
 import { BigNumber, Contract, ethers } from "ethers"
-import { Carousel } from "react-responsive-carousel"
-import 'react-responsive-carousel/lib/styles/carousel.min.css'
+// import { Carousel } from "react-responsive-carousel"
+// import 'react-responsive-carousel/lib/styles/carousel.min.css'
 
 interface Candidate {
   name: any,
@@ -86,18 +85,18 @@ export default function Home() {
 
   return (
     <>
-      <nav className="bg-gray w-screen flex justify-between h-full">
+      <nav className="p-2 bg-gray w-screen flex justify-between">
         <Header />
-        <aside className="flex right-0 gap-3">
-          <button className="btn" onClick={fetchCandidateData}>Get Candidates</button>
-          <button className="btn" onClick={callElection}>Call Election</button>
+        <aside className="flex gap-3">
+          <button className="w-full" onClick={() => fetchCandidateData()}>Get Candidates</button>
+          <button className="w-full" onClick={() => callElection()}>Call Election</button>
         </aside>
       </nav>
 
       <main className="flex min-h-screen flex-col items-center justify-between p-12">
         <div id="all-candidates">
           {!candidates && 'NO CANDIDATES REGISTERED YET!'}
-          <Carousel className="grid gap-12 lg:grid-cols-4" showThumbs={false} breakPoints={breakpoints}>
+          {/* <Carousel className="grid gap-12 lg:grid-cols-1" showIndicators={false} showThumbs={false} breakPoints={breakpoints}> */}
             {candidates && candidates.map(({ name, id, voteCount }: Candidate) => {
               return (
                 <div key={id.toNumber()}>
@@ -109,7 +108,7 @@ export default function Home() {
                 </div>
               )
             })}
-          </Carousel>
+          {/* </Carousel> */}
         </div>
       </main>
       

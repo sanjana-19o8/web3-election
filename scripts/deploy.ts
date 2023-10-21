@@ -1,7 +1,7 @@
 // Deploy our smart contract onto Testnet using ethers.js library
 
 import { ethers } from 'ethers'
-import { abi, addr } from '../src/contracts/election'
+import { abi, addr } from '../contracts/election'
 
 declare global {
     interface Window {

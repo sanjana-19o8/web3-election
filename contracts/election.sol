@@ -18,7 +18,6 @@ contract Election {
     mapping(uint => Candidate) public candidates;
     uint public candidateCount = 0;
     
-    uint public bidderCount = 1;
     bool public ended = false;
 
     event Voted(uint indexed _candidateId);
@@ -34,7 +33,7 @@ contract Election {
         _;
     }
     modifier onlyOwner(){
-        require(msg.sender == owner, "Only beneficiary can call the function");
+        require(msg.sender == owner, "Only admin can access the function");
         _;
     }
 
@@ -46,12 +45,6 @@ contract Election {
     function _addCandidate(string memory _name, string memory _party) onlyOwner private {
         candidateCount++;
         candidates[candidateCount] = Candidate(candidateCount, _name, _party, 0);
-    }
-
-    function call_election() onlyOwner public{
-        require(msg.sender == owner, "Only EC can call the election!");
-        require(ended, "Election is currently active.");
-        ended = false;
     }
 
     function vote(uint _candidateId) public{

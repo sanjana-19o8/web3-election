@@ -2,7 +2,7 @@
 'use client'
 import { useEffect, useState } from "react"
 import { Header, Card } from "./components/index"
-import { addr, abi } from '../contracts/election'
+import { addr, abi } from '../../contracts/election'
 import { BigNumber, Contract, ethers } from "ethers"
 // import { Carousel } from "react-responsive-carousel"
 // import 'react-responsive-carousel/lib/styles/carousel.min.css'
@@ -113,7 +113,7 @@ export default function Home() {
       </main>
       
       <footer className="mb-32 grid text-center lg:mb-0 lg:grid-cols-1 lg:text-left">
-        &copy;&lt;sanjana-vajr /&gt;
+        &copy;&lt;DVS for Decentrailsed Voting /&gt;
       </footer>
     </>
   )

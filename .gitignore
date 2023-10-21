@@ -36,3 +36,13 @@ next-env.d.ts
 
 # notes
 .txt
+.env
+coverage
+coverage.json
+typechain
+typechain-types
+
+# Hardhat files
+cache
+artifacts
+

@@ -1,11 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 import { useEffect, useState } from "react"
+import { BigNumber, Contract, ethers } from 'ethers'
 import { Header, Card } from "./components/index"
-import { addr, abi } from '../../contracts/election'
-import { BigNumber, Contract, ethers } from "ethers"
-// import { Carousel } from "react-responsive-carousel"
-// import 'react-responsive-carousel/lib/styles/carousel.min.css'
+import { addr, abi } from '../../scripts/election'
+
+declare global {
+  interface Window {
+    ethereum?: any,
+  }
+}
 
 interface Candidate {
   name: any,
@@ -20,34 +24,51 @@ const breakpoints = [
   { width: 1200, itemsToShow: 4 },
 ]
 
-export default function Home() {
+export default function App() {
   const [signer, setSigner] = useState<any>();
   const [contract, setContract] = useState<Contract>();
   const [candidates, setCandidates] = useState<Array<Candidate>>();
 
-  useEffect(() => {
-    const fetchData = async () => {
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const provider = new ethers.providers.Web3Provider(window.ethereum);
+  //       // Request user account access
+  //       window.ethereum.request({ method: 'eth_requestAccounts' })
+  //         .then((accounts: any) => {
+  //           // successful account access
+  //         })
+  //         .catch((error: any) => {
+  //           console.error('Error:', error);
+  //         });
+  //       const _signer = provider.getSigner();
+  //       setSigner(_signer);
+
+  //       const _contract = new ethers.Contract(addr, abi, _signer);
+  //       setContract(_contract);
+  //     } catch (error) {
+  //       console.log('data not fetched');
+  //     }
+  //   };
+  //   fetchData();
+  // }, [])
+
+  async function connectWallet() {
+    if (window.ethereum) {
       try {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
-        // Request user account access
-        window.ethereum.request({ method: 'eth_requestAccounts' })
-          .then((accounts: any) => {
-            // successful account access
-          })
-          .catch((error: any) => {
-            console.error('Error:', error);
-          });
+        await provider.send('eth_requestAccounts', []);
         const _signer = provider.getSigner();
         setSigner(_signer);
 
-        const _contract = new ethers.Contract(addr, abi, _signer);
-        setContract(_contract);
+        console.log('Metamask connected @ ', signer.getAddress());
       } catch (error) {
-        console.log('data not fetched');
+        console.error(error)
       }
-    };
-    fetchData();
-  }, [])
+    } else {
+      console.log('Metamask not detected. Install extenstion');
+    }
+  }
 
   const fetchCandidateData = async () => {
     try {
@@ -62,10 +83,10 @@ export default function Home() {
     }
   };
 
-  const callElection = async () => {
+  const addCandidate = async () => {
     try {
       const accounts = await signer.getAddress();
-      const result = await contract.election('linda').send({ from: accounts[0] });
+      const result = await contract._addCandidate('linda', 'new').send({ from: accounts[0] });
       console.log(result, 'foo');
 
     } catch (error) {
@@ -84,37 +105,42 @@ export default function Home() {
   }
 
   return (
-    <>
+    <main>
       <nav className="p-2 bg-gray w-screen flex justify-between">
-        <Header />
-        <aside className="flex gap-3">
-          <button className="w-full" onClick={() => fetchCandidateData()}>Get Candidates</button>
-          <button className="w-full" onClick={() => callElection()}>Call Election</button>
-        </aside>
+        <div className="z-10 w-screen max-w-5xl items-center justify-between text-xl bg-gradient-to-1 from-zinc-200 pt-8 backdrop-blur-2xl dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30 lg:flex">
+          <p className="fixed left-0 top-0 flex flex-col gap-2 w-screen justify-center font-bold">
+            Election Hour&nbsp;
+            <code className="font-mono font-light text-sm">Cast your vote!</code>
+          </p>
+        </div>
       </nav>
 
       <main className="flex min-h-screen flex-col items-center justify-between p-12">
         <div id="all-candidates">
           {!candidates && 'NO CANDIDATES REGISTERED YET!'}
           {/* <Carousel className="grid gap-12 lg:grid-cols-1" showIndicators={false} showThumbs={false} breakPoints={breakpoints}> */}
-            {candidates && candidates.map(({ name, id, voteCount }: Candidate) => {
-              return (
-                <div key={id.toNumber()}>
-                  <Card
-                    name={name}
-                    id={id.toNumber()}
-                    voteCount={voteCount.toNumber()}
-                    voteFn={() => vote(id.toNumber())} />
-                </div>
-              )
-            })}
+          {candidates && candidates.map(({ name, id, voteCount }: Candidate) => {
+            return (
+              <div key={id.toNumber()}>
+                <Card
+                  name={name}
+                  id={id.toNumber()}
+                  voteCount={voteCount.toNumber()}
+                  voteFn={() => vote(id.toNumber())} />
+              </div>
+            )
+          })}
           {/* </Carousel> */}
+          <div className="flex gap-3">
+            <button className="w-full" onClick={() => fetchCandidateData()}>Get Candidates</button>
+            <button className="w-full" onClick={() => addCandidate()}>Add Candidate</button>
+          </div>
         </div>
       </main>
-      
+
       <footer className="mb-32 grid text-center lg:mb-0 lg:grid-cols-1 lg:text-left">
         &copy;&lt;DVS for Decentrailsed Voting /&gt;
       </footer>
-    </>
+    </main>
   )
 }

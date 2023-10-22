@@ -1,22 +1,47 @@
-export const addr: string = '0xcF00d47dae7247e403e02FF0C89D2F65A4b1FAa6';
+export const addr: string = '0x1AeC516e344F3bE30c4aE2Ed36F5fD6b2172170a';
 export const abi: Array<object> = [
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_name",
-				"type": "string"
-			}
-		],
-		"name": "election",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
 	{
 		"inputs": [],
 		"stateMutability": "nonpayable",
 		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "bool",
+				"name": "ended",
+				"type": "bool"
+			}
+		],
+		"name": "ElectionEnded",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "bool",
+				"name": "declared",
+				"type": "bool"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "CandidateId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "Name",
+				"type": "string"
+			}
+		],
+		"name": "Results",
+		"type": "event"
 	},
 	{
 		"inputs": [
@@ -41,7 +66,7 @@ export const abi: Array<object> = [
 				"type": "uint256"
 			}
 		],
-		"name": "votedEvent",
+		"name": "Voted",
 		"type": "event"
 	},
 	{
@@ -78,6 +103,11 @@ export const abi: Array<object> = [
 				"type": "string"
 			},
 			{
+				"internalType": "string",
+				"name": "party",
+				"type": "string"
+			},
+			{
 				"internalType": "uint256",
 				"name": "voteCount",
 				"type": "uint256"
@@ -103,6 +133,11 @@ export const abi: Array<object> = [
 						"type": "string"
 					},
 					{
+						"internalType": "string",
+						"name": "party",
+						"type": "string"
+					},
+					{
 						"internalType": "uint256",
 						"name": "voteCount",
 						"type": "uint256"
@@ -111,6 +146,19 @@ export const abi: Array<object> = [
 				"internalType": "struct Election.Candidate[]",
 				"name": "candyArr",
 				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "ended",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
 			}
 		],
 		"stateMutability": "view",
@@ -149,3 +197,4 @@ export const abi: Array<object> = [
 		"type": "function"
 	}
 ]
+const ethscan = 'https://sepolia.etherscan.io/tx/0x1a1337e37e13c4899e63c40d1acf690243c6dae8031be63b3c94c9d4ff95207f'

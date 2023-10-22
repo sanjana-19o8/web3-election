@@ -56,7 +56,7 @@ contract Election {
         emit Voted(_candidateId);
     }
 
-    function declare_results() onlyOwner internal {
+    function declare_results() onlyOwner internal returns(uint id, string memory name) {
         uint count = 0;
         uint winnerId = 0;
         for(uint i = 0 ; i < candidateCount; i++){
@@ -67,6 +67,7 @@ contract Election {
         }
         emit Results(true, candidates[winnerId].id, candidates[winnerId].name);
         end();
+        return (candidates[winnerId].id, candidates[winnerId].name);
     }
 
     function displayCandidates() public view returns(Candidate [] memory candyArr){

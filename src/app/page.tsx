@@ -25,6 +25,7 @@ const breakpoints = [
 ]
 
 export default function App() {
+  const [connected, setConnected] = useState<boolean>(false);
   const [signer, setSigner] = useState<any>();
   const [contract, setContract] = useState<Contract>();
   const [candidates, setCandidates] = useState<Array<Candidate>>();
@@ -56,12 +57,13 @@ export default function App() {
   async function connectWallet() {
     if (window.ethereum) {
       try {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        await provider.send('eth_requestAccounts', []);
-        const _signer = provider.getSigner();
-        setSigner(_signer);
+        const provider = new ethers.providers.Web3Provider(window.ethereum)
+        await provider.send('eth_requestAccounts', [])
+        const _signer = provider.getSigner()
+        setSigner(_signer)
 
-        console.log('Metamask connected @ ', signer.getAddress());
+        console.log('Metamask connected @ ', signer.getAddress())
+        setConnected(true);
       } catch (error) {
         console.error(error)
       }
@@ -94,6 +96,17 @@ export default function App() {
     }
   }
 
+  const call_result = async () => {
+    try {
+      const accounts = await signer.getAddress();
+      const result = await contract.declare_results().send({ from: accounts[0] });
+      console.log(result, 'foo');
+
+    } catch (error) {
+      console.log('confirm txn...');
+    }
+  }
+
   const vote = async (id: number) => {
     try {
       const accounts = await signer.getAddress();
@@ -117,6 +130,7 @@ export default function App() {
 
       <main className="flex min-h-screen flex-col items-center justify-between p-12">
         <div id="all-candidates">
+          <button className="w-full" onClick={() => fetchCandidateData()}>List Candidates</button>
           {!candidates && 'NO CANDIDATES REGISTERED YET!'}
           {/* <Carousel className="grid gap-12 lg:grid-cols-1" showIndicators={false} showThumbs={false} breakPoints={breakpoints}> */}
           {candidates && candidates.map(({ name, id, voteCount }: Candidate) => {
@@ -131,10 +145,15 @@ export default function App() {
             )
           })}
           {/* </Carousel> */}
-          <div className="flex gap-3">
-            <button className="w-full" onClick={() => fetchCandidateData()}>Get Candidates</button>
-            <button className="w-full" onClick={() => addCandidate()}>Add Candidate</button>
-          </div>
+          {connected
+            ? <div className="flex gap-3">
+              <button className="w-full" onClick={() => vote(1)}>Vote</button>
+              <button className="w-full" onClick={() => addCandidate()}>Add Candidate</button>
+            </div>
+            : <div>
+              <button className="w-full" onClick={() => fetchCandidateData()}>List Candidates</button>
+            </div>
+          }
         </div>
       </main>
 

@@ -151,7 +151,7 @@ export default function App() {
               <button className="w-full" onClick={() => addCandidate()}>Add Candidate</button>
             </div>
             : <div>
-              <button className="w-full" onClick={() => fetchCandidateData()}>List Candidates</button>
+              <button className="w-full" onClick={() => connectWallet()}>Link Wallet</button>
             </div>
           }
         </div>

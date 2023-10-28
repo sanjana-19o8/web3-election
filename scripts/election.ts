@@ -1,4 +1,4 @@
-export const addr: string = '0x1AeC516e344F3bE30c4aE2Ed36F5fD6b2172170a';
+export const addr: string = '0x5809098b0145DcbEAFd53a93eFF85352c7cF9397';
 export const abi: Array<object> = [
 	{
 		"inputs": [],
@@ -42,19 +42,6 @@ export const abi: Array<object> = [
 		],
 		"name": "Results",
 		"type": "event"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_candidateId",
-				"type": "uint256"
-			}
-		],
-		"name": "vote",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
 	},
 	{
 		"anonymous": false,
@@ -180,6 +167,19 @@ export const abi: Array<object> = [
 	{
 		"inputs": [
 			{
+				"internalType": "uint256",
+				"name": "_candidateId",
+				"type": "uint256"
+			}
+		],
+		"name": "vote",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "address",
 				"name": "",
 				"type": "address"
@@ -197,4 +197,4 @@ export const abi: Array<object> = [
 		"type": "function"
 	}
 ]
-const ethscan = 'https://sepolia.etherscan.io/tx/0x1a1337e37e13c4899e63c40d1acf690243c6dae8031be63b3c94c9d4ff95207f'
+const ethscan = 'https://sepolia.etherscan.io/tx/0xa730ee75fc3082afa25e036447e6e3882b4182dc8c34ce15793f27fab4b4f576'

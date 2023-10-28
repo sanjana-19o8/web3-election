@@ -18,6 +18,18 @@ module.exports = {
       },
       fontFamily: {
         textCursive: ['Dancing Script', 'cursive']
+      },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'gradient-conic':
+          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      },
+      colors: {
+        bgGreen: '#183C33',
+        bgLight: '#F2EFE7',
+        textLight: '#91CD65',
+        textPink: '#FAB79B',
+        bgGray: '#EBE7DA'
       }
     },
   },

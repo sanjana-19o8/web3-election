@@ -42,7 +42,7 @@ contract Election {
         emit ElectionEnded(true);
     }
 
-    function _addCandidate(string memory _name, string memory _party) onlyOwner private {
+    function _addCandidate(string memory _name, string memory _party) onlyOwner internal  {
         candidateCount++;
         candidates[candidateCount] = Candidate(candidateCount, _name, _party, 0);
     }

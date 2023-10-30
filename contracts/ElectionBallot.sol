@@ -74,7 +74,7 @@ contract Election {
         // for frontend
         require(candidateCount > 0, "No registered candidates!");
         candyArr = new Candidate[](candidateCount);
-        for(uint i = 0 ; i < candidateCount; i++){
+        for(uint i = 1 ; i < candidateCount; i++){
             candyArr[i] = candidates[i];
         }
         return candyArr;

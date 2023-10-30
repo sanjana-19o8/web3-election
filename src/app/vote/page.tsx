@@ -32,7 +32,8 @@ export default function Vote() {
     const [status, setStatus] = useState<boolean>();
     const [candidates, setCandidates] = useState<Array<Candidate>>();
 
-    const [number, setNumber] = useState<number>(0);
+    const [name, setName] = useState<string>('');
+    const [party, setParty] = useState<string>('');
     const [canVote, setCanVote] = useState<boolean>(true);
 
     useEffect(() => {
@@ -57,8 +58,12 @@ export default function Vote() {
         }
     }
 
-    function handleNumberChange(e: any) {
-        setNumber(e.target.value)
+    function handleNameChange(e: any) {
+        setName(e.target.value)
+    }
+    
+    function handlePartyChange(e: any) {
+        setParty(e.target.value)
     }
 
     async function createConnection() {
@@ -121,9 +126,9 @@ export default function Vote() {
         }
     }
 
-    const addCandidate = async () => {
+    const addCandidate = async (name: string, party: string) => {
         try {
-            const result = await contract.addCandidate('linda', 'individual').send({ from: account });
+            const result = await contract.addCandidate(name, party).send({ from: account });
             console.log(result, 'New candidate added');
 
         } catch (error) {
@@ -162,7 +167,7 @@ export default function Vote() {
     }
 
     return (
-        <main>
+        <main className="flex flex-col justify-between">
             <Header />
 
             <div className="w-full h-screen flex justify-center text-center font-waterfall">
@@ -171,33 +176,38 @@ export default function Vote() {
                         Ready.. Set.. Vote!
                     </h1>
                     Metamask account: {account}
-                    <div className="flex md:flex-col justify-center text-center">
+                    <div className="flex md:flex-col justify-center text-center gap-3">
                         <div className="m-auto flex flex-col">
-                            <input type="number" placeholder="Enter candidate index" value={number} onChange={handleNumberChange} />
-                            <Button variant='contained' onClick={() => addCandidate()}>Add Candidate</Button>
-                            <Button variant='contained' onClick={() => vote(1)}>Vote</Button>
+                            <input type="text" placeholder="Enter candidate name" value={name} onChange={handleNameChange} 
+                            className="text-black" />
+                            <input type="text" placeholder="Enter candidate representation" value={party} onChange={handlePartyChange} 
+                            className="text-black" />
+                            <Button variant='contained' onClick={() => addCandidate(name, party)}>Add Candidate</Button>
+                            <Button variant='contained' onClick={() => call_result()}>Call Results</Button>
                         </div>
                     </div >
                 </div>
 
                 <div className="w-full flex min-h-screen flex-col items-center p-12">
                     <Button variant='contained' onClick={() => fetchCandidateData()}>List Candidates</Button>
-                    {candidates && candidates.map(({ name, id, voteCount }: Candidate) => {
-                        return (
-                            <div key={id.toNumber()}>
-                                <div className="fixed left-0 top-0 flex flex-col gap-2 justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-                                    <p>Candidate name: {name}</p>
-                                    <p>Candidate ID: {id.toNumber()}</p>
-                                    <p>Vote Count: {voteCount.toNumber()}</p>
-                                    <button onClick={() => vote(id.toNumber())}>Vote</button>
+                    <div className="overflow-y-scroll p-10 grid grid-cols-2">
+                        {candidates && candidates.map(({ name, id, voteCount }: Candidate) => {
+                            return (
+                                <div key={id.toNumber()}>
+                                    <div className="fixed left-0 top-0 flex flex-col gap-2 justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
+                                        <p>Candidate name: {name}</p>
+                                        <p>Candidate ID: {id.toNumber()}</p>
+                                        <p>Vote Count: {voteCount.toNumber()}</p>
+                                        <button onClick={() => vote(id.toNumber())}>Vote</button>
+                                    </div>
                                 </div>
-                            </div>
-                        )
-                    })}
+                            )
+                        })}
+                    </div>
                 </div>
             </div>
 
-            <footer className="w-full bg-black text-white md:text-bgGray md:bg-bgLight justify-center text-center bottom-0 grid grid-cols-1">
+            <footer className="w-full bg-black text-white md:text-bgGray md:bg-bgLight justify-center text-center grid grid-cols-1">
                 <div className="mx-0.25 my-0.5 md:bg-bgGray text-cyan-600 font-bold">
                     &copy;&lt;DVS for Decentrailsed Voting /&gt;
                 </div>

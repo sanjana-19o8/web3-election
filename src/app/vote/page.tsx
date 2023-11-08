@@ -35,6 +35,7 @@ export default function Vote() {
     const [name, setName] = useState<string>('');
     const [party, setParty] = useState<string>('');
     const [canVote, setCanVote] = useState<boolean>(true);
+    const [isOwner, setIsOwner] = useState<boolean>();
 
     useEffect(() => {
         createConnection();
@@ -61,7 +62,7 @@ export default function Vote() {
     function handleNameChange(e: any) {
         setName(e.target.value)
     }
-    
+
     function handlePartyChange(e: any) {
         setParty(e.target.value)
     }
@@ -120,6 +121,7 @@ export default function Vote() {
             console.log('owner: ', owner);
 
             setStatus(!ended)
+            setIsOwner(owner == account)
 
         } catch (error) {
             console.log('error fetching election status')
@@ -176,16 +178,17 @@ export default function Vote() {
                         Ready.. Set.. Vote!
                     </h1>
                     Metamask account: {account}
-                    <div className="flex md:flex-col justify-center text-center gap-3">
+                    {isOwner && <div className="flex md:flex-col justify-center text-center gap-3">
                         <div className="m-auto flex flex-col">
-                            <input type="text" placeholder="Enter candidate name" value={name} onChange={handleNameChange} 
-                            className="text-black" />
-                            <input type="text" placeholder="Enter candidate representation" value={party} onChange={handlePartyChange} 
-                            className="text-black" />
+                            <input type="text" placeholder="Enter candidate name" value={name} onChange={handleNameChange}
+                                className="text-black" />
+                            <input type="text" placeholder="Enter candidate representation" value={party} onChange={handlePartyChange}
+                                className="text-black" />
                             <Button variant='contained' onClick={() => addCandidate(name, party)}>Add Candidate</Button>
                             <Button variant='contained' onClick={() => call_result()}>Call Results</Button>
                         </div>
                     </div >
+                    }
                 </div>
 
                 <div className="w-full flex min-h-screen flex-col items-center p-12">

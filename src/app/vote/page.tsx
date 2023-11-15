@@ -5,6 +5,7 @@ import { BigNumber, Contract, ethers } from 'ethers'
 import Button from '@mui/material/Button'
 import { Header, Card } from "../components/index"
 import { addr, abi } from "../../../scripts/election"
+import Footer from "../components/Footer"
 
 declare global {
     interface Window {
@@ -132,6 +133,9 @@ export default function Vote() {
         try {
             const result = await contract.addCandidate(name, party).send({ from: account });
             console.log(result, 'New candidate added');
+            fetchCandidateData();
+            setName('');
+            setParty('');
 
         } catch (error) {
             console.log('error adding candidate');
@@ -172,49 +176,47 @@ export default function Vote() {
         <main className="flex flex-col justify-between">
             <Header />
 
-            <div className="w-full h-screen flex justify-center text-center font-waterfall">
+            <div className="w-full h-screen flex flex-col lg:flex-row justify-center text-center font-waterfall">
                 <div className="m-auto w-full justify-between">
-                    <h1 className="m-20 text-6xl ">
+                    <h1 className="mx-20 my-5 text-6xl ">
                         Ready.. Set.. Vote!
                     </h1>
                     Metamask account: {account}
-                    {isOwner && <div className="flex md:flex-col justify-center text-center gap-3">
-                        <div className="m-auto flex flex-col">
-                            <input type="text" placeholder="Enter candidate name" value={name} onChange={handleNameChange}
-                                className="text-black" />
-                            <input type="text" placeholder="Enter candidate representation" value={party} onChange={handlePartyChange}
-                                className="text-black" />
-                            <Button variant='contained' onClick={() => addCandidate(name, party)}>Add Candidate</Button>
-                            <Button variant='contained' onClick={() => call_result()}>Call Results</Button>
+                    {isOwner &&
+                        <div className="form m-auto flex flex-col md:flex-col justify-center text-center gap-3 p-8 bg-bgDark">
+                            <div className="flex flex-col md:flex-row gap-3">
+                                <input type="text" placeholder="Enter candidate name" value={name} onChange={handleNameChange}
+                                    className="text-black" />
+                                <input type="text" placeholder="Enter candidate representation" value={party} onChange={handlePartyChange}
+                                    className="text-black" />
+                            </div>
+                            <Button variant='contained' className="bg-buttonBlue" onClick={() => addCandidate(name, party)}>Add Candidate</Button>
+                            <Button variant='contained' className="bg-buttonBlue" onClick={() => call_result()}>Call Results</Button>
                         </div>
-                    </div >
                     }
                 </div>
 
-                <div className="w-full flex min-h-screen flex-col items-center p-12">
-                    <Button variant='contained' onClick={() => fetchCandidateData()}>List Candidates</Button>
-                    <div className="overflow-y-scroll p-10 grid grid-cols-2">
-                        {candidates && candidates.map(({ name, id, voteCount }: Candidate) => {
+                <div className="w-full flex min-h-screen flex-col items-center sm:p-4 md:p-12">
+                    <Button variant='contained' className="justify-center bg-buttonBlue" onClick={() => fetchCandidateData()}>List Candidates</Button>
+                    {candidates && <div className="md:overflow-y-scroll p-10 grid grid-cols-1 lg:grid-cols-3 sm:grid-cols-4 md:gap-4">
+                        {candidates.map(({ name, id, voteCount }: Candidate) => {
                             return (
                                 <div key={id.toNumber()}>
-                                    <div className="fixed left-0 top-0 flex flex-col gap-2 justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-                                        <p>Candidate name: {name}</p>
-                                        <p>Candidate ID: {id.toNumber()}</p>
-                                        <p>Vote Count: {voteCount.toNumber()}</p>
-                                        <button onClick={() => vote(id.toNumber())}>Vote</button>
+                                    <div className="flex flex-col gap-2 justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 p-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
+                                        <p>NAME: {name}</p>
+                                        <p>ID: {id.toNumber()}</p>
+                                        {isOwner && <p>Vote Count: {voteCount.toNumber()}</p>}
+                                        <Button variant="outlined" onClick={() => vote(id.toNumber())}>VOTE!</Button>
                                     </div>
                                 </div>
                             )
                         })}
                     </div>
+                    }
                 </div>
             </div>
 
-            <footer className="w-full bg-black text-white md:text-bgGray md:bg-bgLight justify-center text-center grid grid-cols-1">
-                <div className="mx-0.25 my-0.5 md:bg-bgGray text-cyan-600 font-bold">
-                    &copy;&lt;DVS for Decentrailsed Voting /&gt;
-                </div>
-            </footer>
+            <Footer/>
         </main>
     )
 }

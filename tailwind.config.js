@@ -29,7 +29,9 @@ module.exports = {
         bgLight: '#F2EFE7',
         textLight: '#91CD65',
         textPink: '#FAB79B',
-        bgGray: '#EBE7DA'
+        buttonBlue: '#1565C0',
+        bgGray: '#EBE7DA',
+        bgDark: '#202324'
       }
     },
   },

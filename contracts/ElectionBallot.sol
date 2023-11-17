@@ -48,7 +48,7 @@ contract Election {
     }
 
     function vote(uint _candidateId) public{
-        require(!voters[msg.sender]);
+        require(!voters[msg.sender], "Sorry, you've already voted");
         require(_candidateId > 0 && _candidateId <= candidateCount);
 
         voters[msg.sender] = true;
@@ -70,13 +70,13 @@ contract Election {
         return (candidates[winnerId].id, candidates[winnerId].name);
     }
 
-    function displayCandidates() public view returns(Candidate [] memory candyArr){
+    function displayCandidates() public view returns(Candidate [] memory candidatesArr){
         // for frontend
         require(candidateCount > 0, "No registered candidates!");
-        candyArr = new Candidate[](candidateCount);
+        candidatesArr = new Candidate[](candidateCount);
         for(uint i = 1 ; i < candidateCount; i++){
-            candyArr[i] = candidates[i];
+            candidatesArr[i] = candidates[i];
         }
-        return candyArr;
+        return candidatesArr;
     }
 }

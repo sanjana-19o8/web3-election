@@ -7,12 +7,6 @@ import { Header, Card } from "../components/index"
 import { addr, abi } from "../../../scripts/election"
 import Footer from "../components/Footer"
 
-declare global {
-    interface Window {
-        ethereum?: any,
-    }
-}
-
 interface Candidate {
     name: any,
     id: BigNumber,

@@ -96,6 +96,19 @@ export default function App() {
           >
             Link Wallet
           </Button>
+
+          <div className="m-10">
+            New Voter? Register here ➡️
+            <Link href='/register'>
+              <Button
+                className="m-auto"
+                variant="outlined"
+                size="small"
+              >
+                Signup
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
 

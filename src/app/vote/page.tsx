@@ -2,23 +2,16 @@
 'use client'
 import { useEffect, useState } from "react"
 import { BigNumber, Contract, ethers } from 'ethers'
-import Button from '@mui/material/Button'
-import { Header, Card } from "../components/index"
+import { TextField, Button } from "@mui/material"
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Header, Card, Footer } from "../components/index"
 import { addr, abi } from "../../../scripts/election"
-import Footer from "../components/Footer"
 
 interface Candidate {
     name: any,
     id: BigNumber,
     voteCount: BigNumber,
 }
-
-const breakpoints = [
-    { width: 1, itemsToShow: 1 },
-    { width: 550, itemsToShow: 2 },
-    { width: 760, itemsToShow: 3 },
-    { width: 1200, itemsToShow: 4 },
-]
 
 export default function Vote() {
     const [signer, setSigner] = useState<any>();
@@ -71,7 +64,7 @@ export default function Vote() {
 
                 const _address = await _signer.getAddress()
 
-                console.log('From /vote: Metamask connected @ ', _address)
+                // console.log(`From /vote:'\n'Metamask connected @ ${_address}`)
 
                 const contractInstance = new ethers.Contract(addr, abi, _signer)
 
@@ -83,7 +76,6 @@ export default function Vote() {
             }
         } else {
             console.log('Metamask not detected. Install extenstion');
-
         }
     }
 
@@ -110,10 +102,10 @@ export default function Vote() {
     const getVotingStatus = async () => {
         try {
             const ended = await contract.ended();
-            console.log('Election status: ', !ended)
+            // console.log('Election status: ', !ended)
 
             const owner = await contract.owner();
-            console.log('owner: ', owner);
+            // console.log('owner: ', owner);
 
             setStatus(!ended)
             setIsOwner(owner == account)
@@ -128,15 +120,18 @@ export default function Vote() {
             const result = await contract.addCandidate(name, party).send({ from: account });
             console.log(result, 'New candidate added');
             fetchCandidateData();
-            setName('');
-            setParty('');
+            // setName('');
+            // setParty('');
 
         } catch (error) {
-            console.log('error adding candidate');
+            console.log('error adding candidate...');
         }
+
+        setName('');
+        setParty('');
     }
 
-    const call_result = async () => {
+    const callResults = async () => {
         try {
             const result = await contract.declare_results().send({ from: account });
             console.log(result, 'foo');
@@ -166,6 +161,19 @@ export default function Vote() {
         }
     }
 
+    const handleSubmit = (e: any) => {
+        e.preventDefault();
+        addCandidate(name, party);
+
+        console.log('Form submitted with:', name, party);
+        setName('');
+        setParty('');
+        // Set a timer for fetchCandidateData after 5000 milliseconds (5 seconds)
+        setTimeout(() => {
+            fetchCandidateData();
+        }, 7000);
+    };
+
     return (
         <main className="flex flex-col justify-between">
             <Header />
@@ -179,13 +187,13 @@ export default function Vote() {
                     {isOwner &&
                         <div className="form m-auto flex flex-col md:flex-col justify-center text-center gap-3 p-8 bg-bgDark">
                             <div className="flex flex-col md:flex-row gap-3">
-                                <input type="text" placeholder="Enter candidate name" value={name} onChange={handleNameChange}
+                                <input type="text" placeholder="Enter candidate name" name="name" id="name" value={name} onChange={handleNameChange}
                                     className="text-black" />
-                                <input type="text" placeholder="Enter candidate representation" value={party} onChange={handlePartyChange}
+                                <input type="text" placeholder="Enter candidate representation" name="party" id="party" value={party} onChange={handlePartyChange}
                                     className="text-black" />
                             </div>
-                            <Button variant='contained' className="bg-buttonBlue" onClick={() => addCandidate(name, party)}>Add Candidate</Button>
-                            <Button variant='contained' className="bg-buttonBlue" onClick={() => call_result()}>Call Results</Button>
+                            <Button variant='contained' className="bg-buttonBlue" onClick={handleSubmit}>Add Candidate</Button>
+                            <Button variant='contained' className="bg-buttonBlue" onClick={() => callResults()}>Call Results</Button>
                         </div>
                     }
                 </div>
@@ -194,11 +202,15 @@ export default function Vote() {
                     <Button variant='contained' className="justify-center bg-buttonBlue" onClick={() => fetchCandidateData()}>List Candidates</Button>
                     {candidates && <div className="md:overflow-y-scroll p-10 grid grid-cols-1 lg:grid-cols-3 sm:grid-cols-4 md:gap-4">
                         {candidates.map(({ name, id, voteCount }: Candidate) => {
+                            if (id.toNumber() == 0) {
+                                name = 'NOTA';
+                            }
+
                             return (
                                 <div key={id.toNumber()}>
                                     <div className="flex flex-col gap-2 justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 p-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
+                                        <p className="text-cyan-600">ID: #xx{id.toNumber()}</p>
                                         <p>NAME: {name}</p>
-                                        <p>ID: {id.toNumber()}</p>
                                         {isOwner && <p>Vote Count: {voteCount.toNumber()}</p>}
                                         <Button variant="outlined" onClick={() => vote(id.toNumber())}>VOTE!</Button>
                                     </div>
@@ -210,7 +222,7 @@ export default function Vote() {
                 </div>
             </div>
 
-            <Footer/>
+            <Footer />
         </main>
     )
 }

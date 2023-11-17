@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-// pages/api/register.ts
 import { NextApiRequest, NextApiResponse } from 'next';
 import { ethers } from 'ethers';
 import { useRouter } from 'next/navigation';

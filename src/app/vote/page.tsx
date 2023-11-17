@@ -119,16 +119,9 @@ export default function Vote() {
         try {
             const result = await contract.addCandidate(name, party).send({ from: account });
             console.log(result, 'New candidate added');
-            fetchCandidateData();
-            // setName('');
-            // setParty('');
-
         } catch (error) {
             console.log('error adding candidate...');
         }
-
-        setName('');
-        setParty('');
     }
 
     const callResults = async () => {

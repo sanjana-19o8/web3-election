@@ -5,7 +5,7 @@ import { BigNumber, Contract, ethers } from 'ethers'
 import { TextField, Button } from "@mui/material"
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Header, Card, Footer } from "../components/index"
-import { addr, abi } from "../../../scripts/election"
+import { addr, abi } from "@/scripts/election"
 
 interface Candidate {
     name: any,
@@ -168,17 +168,17 @@ export default function Vote() {
         console.log('Form submitted with:', name, party);
         setName('');
         setParty('');
-        // Set a timer for fetchCandidateData after 5000 milliseconds (5 seconds)
+        // Set a timer for fetchCandidateData after (10 seconds)
         setTimeout(() => {
             fetchCandidateData();
-        }, 7000);
+        }, 10000);
     };
 
     return (
         <main className="flex flex-col justify-between">
             <Header />
 
-            <div className="w-full h-screen flex flex-col lg:flex-row justify-center text-center font-waterfall">
+            <div className="w-full h-screen mt-20 flex flex-col lg:flex-row justify-center text-center font-waterfall">
                 <div className="m-auto w-full justify-between">
                     <h1 className="mx-20 my-5 text-6xl ">
                         Ready.. Set.. Vote!
@@ -187,10 +187,24 @@ export default function Vote() {
                     {isOwner &&
                         <div className="form m-auto flex flex-col md:flex-col justify-center text-center gap-3 p-8 bg-bgDark">
                             <div className="flex flex-col md:flex-row gap-3">
-                                <input type="text" placeholder="Enter candidate name" name="name" id="name" value={name} onChange={handleNameChange}
-                                    className="text-black" />
-                                <input type="text" placeholder="Enter candidate representation" name="party" id="party" value={party} onChange={handlePartyChange}
-                                    className="text-black" />
+                                <TextField
+                                    className="w-full bg-white rounded p-0"
+                                    type="text"
+                                    placeholder="Enter candidate name"
+                                    label="Name"
+                                    name="name"
+                                    id="name"
+                                    value={name}
+                                    onChange={handleNameChange} />
+                                <TextField
+                                    className="w-full bg-white rounded p-0"
+                                    type="text"
+                                    placeholder="Party (any/individual)"
+                                    label="Party"
+                                    name="party"
+                                    id="party"
+                                    value={party}
+                                    onChange={handlePartyChange} />
                             </div>
                             <Button variant='contained' className="bg-buttonBlue" onClick={handleSubmit}>Add Candidate</Button>
                             <Button variant='contained' className="bg-buttonBlue" onClick={() => callResults()}>Call Results</Button>

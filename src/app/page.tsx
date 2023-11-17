@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 import { BigNumber, Contract, ethers } from 'ethers'
 import Button from '@mui/material/Button'
 import { Header, Card } from "./components/index"
-import { addr, abi } from '../../scripts/election'
+import { addr, abi } from '../scripts/election'
 import Link from "next/link"
 
 interface Candidate {

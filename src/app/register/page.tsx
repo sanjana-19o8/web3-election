@@ -64,6 +64,7 @@ const Register = () => {
                 >
                     Link Wallet
                 </Button>
+                {metamaskAddr && <p>Metamask account: {metamaskAddr}</p>}
                 <form className="flex flex-col items-center justify-center mx-auto mt-8 text-gray-600" onSubmit={handleSubmit}>
                     <Grid container spacing={2} className="mb-4 w-full max-w-md">
                         <Grid item xs={12}>

@@ -45,6 +45,10 @@ contract Election {
         require(msg.sender == owner, "Only admin can access the function");
         _;
     }
+    modifier isRegistered(){
+        require(registeredAddrs[msg.sender], "Please register as voter before you vote");
+        _;
+    }
 
     function end() onlyOwner private {
         ended = true;
@@ -61,10 +65,12 @@ contract Election {
         require(!registeredAddrs[msg.sender], "Voter exists on this address. Please use a different address");
 
         voters[msg.sender] = Voter(_name, _uid, false);
+        registeredAddrs[msg.sender] = true;
+        registeredIDs[_uid] = true;
         emit NewVoter("Successfully registered new voter");
     }
 
-    function vote(uint _candidateId) public{
+    function vote(uint _candidateId) public isRegistered{
         require(!voters[msg.sender].voted, "Sorry, you've already voted");
         require(_candidateId > 0 && _candidateId <= candidateCount);
 
@@ -85,6 +91,11 @@ contract Election {
         emit Results(true, candidates[winnerId].id, candidates[winnerId].name);
         end();
         return (candidates[winnerId].id, candidates[winnerId].name);
+    }
+
+    function getVoterData(string memory uniqueId) public view returns(string memory, string memory, bool ) {
+        require(registeredIDs[uniqueId], "No voter registered with this id");
+        return (voters[msg.sender].name, voters[msg.sender].uid, voters[msg.sender].voted);
     }
 
     function displayCandidates() public view returns(Candidate [] memory candidatesArr){

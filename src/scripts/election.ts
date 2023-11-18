@@ -1,4 +1,4 @@
-export const addr: string = '0xd494b1F736Fa2Adf99786Bd69Bee75D262b36c27';
+export const addr: string = '0x601e6b97F07Ae19756e6eeFB763357F934f97dae';
 
 export const abi: Array<object> = [
 	{
@@ -174,6 +174,35 @@ export const abi: Array<object> = [
 		"inputs": [],
 		"name": "ended",
 		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "uniqueId",
+				"type": "string"
+			}
+		],
+		"name": "getVoterData",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
 			{
 				"internalType": "bool",
 				"name": "",
